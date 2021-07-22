@@ -215,7 +215,7 @@ record simplifier extends rule_set {
 
 			new rule(any1 ^ (any2 ^ any3), any1 ^ (any2 * any3)),
 
-			new rule(const1 ^ goproc log(any1, const2), any1),
+			new rule(any1 ^ goproc log(any2, any1), any2),
 
 			new rule((const1 * var1) * const2, (const1 * const2) * var1),
 			new rule(const2 * (const1 * var1), (const1 * const2) * var1),
