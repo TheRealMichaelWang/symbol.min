@@ -1,0 +1,25 @@
+include "symbol/core.txt"
+include "symbol/rules.txt"
+
+record expander extends rule_set {
+	proc init {
+		set any1 to new match(100, #any)
+		set any2 to new match(101, #any)
+		set any3 to new match(102, #any)
+		set const1 to new match(200, #eq_num)
+		set const2 to new match(201, #eq_num)
+		set const3 to new match(201, #eq_num)
+		set var1 to new match(300, #eq_var)
+		set var2 to new match(301, #eq_var)
+		set var3 to new match(302, #eq_var)
+
+		set this.base to {
+			new rule((any1 + any2) * (any3 + any4), any1 * any3 + any1 * any4 + any2 * any3 + any2 * any4),
+			new rule((any1 - any2) * (any3 - any4), any1 * any3 - any1 * any4 - any2 * any3 + any2 * any4),
+
+			new rule(any1 ^ 2, any1 * any1),
+			new rule(any1 ^ 3, any1 * any1 * any1),
+			new rule(any1 ^ 4, any1 * any1 * any1 * any1)
+		}
+	}
+}

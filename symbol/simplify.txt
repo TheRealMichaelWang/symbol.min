@@ -262,8 +262,9 @@ record simplifier extends rule_set {
 			new rule(any1 - any1 * any2, any1 * (1 - any2)),
 
 			new rule(any1 ^ -1, 1 / any1),
+			new rule(any1 + -any2, any1 - any2),
+			new rule(any1 * (1 / any2), any1 / any2),
 
-			new rule(-1 * any1 + any2, any2 - any1),
 			new rule(any1 / any2 * any3, any1 * any3 / any2)
 		}
 	}

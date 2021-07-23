@@ -172,15 +172,17 @@ record rule_set {
 
 	proc apply(eq_entity) {
 		set simp_flag to true
+		set eq_entity to goproc sort_terms(goproc terms as eq_entity, 3)
+
 		while simp_flag {
 			set simp_flag to false
 
 			if extern implements(eq_entity, #eq_bin_op) {
-				set eq_entity.left to goproc sort_apply as this(eq_entity.left)
-				set eq_entity.right to goproc sort_apply as this(eq_entity.right)
+				set eq_entity.left to goproc apply as this(eq_entity.left)
+				set eq_entity.right to goproc apply as this(eq_entity.right)
 			}
 			elif extern implements(eq_entity, #eq_uni_op) {
-				set eq_entity.operand to goproc sort_apply as this(eq_entity.operand)
+				set eq_entity.operand to goproc apply as this(eq_entity.operand)
 			}
 			else {
 				return eq_entity
@@ -190,17 +192,13 @@ record rule_set {
 			while dec i {
 				set m_stat to goproc apply as this.rules[i](eq_entity)
 				if m_stat {
-					set eq_entity to m_stat
+					set eq_entity to goproc sort_terms(goproc terms as m_stat, 3)
 					set simp_flag to true
 					inc i
 				}
 			}
 		}
-		return eq_entity
-	}
 
-	proc sort_apply(eq_entity) {
-		set sorted to goproc sort_terms(goproc terms as eq_entity, 3)
-		return goproc apply as this(sorted)
+		return eq_entity
 	}
 }

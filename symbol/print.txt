@@ -1,14 +1,23 @@
 include "symbol/core.txt"
-
-record eq_leaf {
-	proc print {
-		extern print(this.obj)
-	}
-}
+include "symbol/match.txt"
 
 record match {
 	proc print {
 		extern print("match:",this.id)
+	}
+}
+
+record rule {
+	proc print {
+		goproc print as this.match_rule
+		extern print(" => ")
+		goproc print as this.replace_rule
+	}
+}
+
+record eq_leaf {
+	proc print {
+		extern print(this.obj)
 	}
 }
 

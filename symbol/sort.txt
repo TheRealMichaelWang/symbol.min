@@ -20,6 +20,36 @@ record eq_leaf {
 	}
 }
 
+record eq_bin_op {
+	proc linear_children(op_prec) {
+		set list to new list
+		if this.op_prec - (this.op_prec % 2) == op_prec - (op_prec % 2) {
+			goproc push_range as list(goproc linear_children as this.left(op_prec))
+			if this.op_prec > op_prec {
+				set rchildren to goproc array as goproc linear_children as this.right(op_prec)
+				set ri to extern len(rchildren)
+				if extern typeof(this) == extern typeof(#eq_op_subtract) {
+					while dec ri {
+						goproc push_back as list(-rchildren[ri])
+					}
+				}
+				elif extern typeof(this) == extern typeof(#eq_op_divide) {
+					while dec ri {
+						goproc push_back as list(1 / rchildren[ri])
+					}
+				}
+			}
+			else {
+				goproc push_range as list(goproc linear_children as this.right(op_prec))
+			}
+		}
+		else {
+			goproc push_back as list(this)
+		}
+		return list
+	}	
+}
+
 record eq_node {
 	proc sort_comp(eq_entity, level) {
 		if !extern implements(eq_entity, #eq_node) {
@@ -48,20 +78,6 @@ record eq_node {
 			return same == extern len(this.children)
 		}
 	}
-}
-
-record eq_bin_op {
-	proc linear_children(op_prec) {
-		set list to new list
-		if this.op_prec - (this.op_prec % 2) == op_prec - (op_prec % 2) {
-			goproc push_range as list(goproc linear_children as this.left(op_prec))
-			goproc push_range as list(goproc linear_children as this.right(op_prec))
-		}
-		else {
-			goproc push_back as list(this)
-		}
-		return list
-	}	
 }
 
 record op_uni_op {
